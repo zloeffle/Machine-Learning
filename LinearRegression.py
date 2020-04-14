@@ -72,9 +72,11 @@ class LinearReg_Example:
     def details(self):
         data = self.data
         print(data.columns)
+        print(data.shape)
         print(data.head())
         print(data.info())
         print(data.describe())
+        print(data.isnull().sum()) # get cols with null vals
         
     def predict(self):
         df = self.data

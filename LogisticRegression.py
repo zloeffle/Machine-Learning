@@ -21,14 +21,12 @@ class LogisticReg:
 
     def details(self):
         data = self.data
-        print(data.columns + '\n')
+        print(data.columns)
+        print(data.shape)
         print(data.head())
         print(data.info())
         print(data.describe())
-        print(data.isnull())
-
-        # heatmap to find missing data
-        sns.heatmap(data.isnull(), yticklabels=False, cbar=False, cmap='viridis')
+        print(data.isnull().sum()) # get cols with null vals
         
     # replaces missing vals in age column with the average age for the corresponding pclass
     def impute_age(self, cols):

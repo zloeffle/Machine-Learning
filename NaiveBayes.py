@@ -15,6 +15,7 @@ class NaiveBayes:
         self.dataset = dataset
         self.data = None
         
+    # prepare the data to be converted into a dataframe
     def prep(self):
         dataset = self.dataset
         columns = ['Petal Length', 'Petal Width', 'Sepal Length', 'Sepal Width']

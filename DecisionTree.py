@@ -6,11 +6,6 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import classification_report,confusion_matrix
 from sklearn.ensemble import RandomForestClassifier
 
-from IPython.display import Image  
-from sklearn.externals.six import StringIO  
-from sklearn.tree import export_graphviz
-import pydot
-
 '''
 Example using kyphosis dataset
 
@@ -34,6 +29,7 @@ class DecisionTree:
     def details(self):
         data = self.data
         print(data.columns)
+        print(data.shape)
         print(data.head())
         print(data.info())
         print(data.describe())
@@ -46,10 +42,12 @@ class DecisionTree:
         y = df['Kyphosis']
         x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.30)
         
+        # decision tree
         dt = DecisionTreeClassifier()
         dt.fit(x_train, y_train)
         dt_pred = dt.predict(x_test)
         
+        # random forest
         rf = RandomForestClassifier(100)
         rf.fit(x_train, y_train)
         rf_pred = rf.predict(x_test)
