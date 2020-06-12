@@ -44,7 +44,7 @@ class KNN:
         
         # transform data
         scaled_feat = scaler.transform(df.drop('TARGET CLASS',axis=1))
-        
+        print(scaled_feat)
         return scaled_feat
         
     def classify(self, neighbors=1):
@@ -81,7 +81,8 @@ class KNN:
         
 if __name__ == '__main__':
     knn = KNN('data/Classified Data.csv')
-    knn.details()
-    knn.classify()
-    knn.choose_k()
+    #knn.details()
+    knn.standardize()
+    #knn.classify()
+    #knn.choose_k()
     
