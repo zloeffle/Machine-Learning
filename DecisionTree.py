@@ -124,14 +124,14 @@ class DecisionTree:
             node.left = self.to_terminal(left)
         else:
             node.left = self.best_split(left)
-            self.split(node.left, depth+1,min_size)
+            self.split_node(node.left, depth+1,min_size)
 
         # process right child
         if len(right) <= min_size:
             node.right = self.to_terminal(right)
         else:
             node.right = self.best_split(right)
-            self.split(node.right, depth+1,min_size)
+            self.split_node(node.right, depth+1,min_size)
 
     # build the decision tree model
     def build_tree(self,data):
