@@ -4,7 +4,11 @@ import math
 from sklearn.model_selection import train_test_split
 
 '''
-Representation of a node in the tree
+Interpretable classification/regression model that splits data features into branches at decision nodes until a final decision output is returned
+
+Uses
+- Understand consumer behavior on your website
+- Decision framework for new job candidates
 '''
 class Node:
     def __init__(self,feature,thresh,gini):

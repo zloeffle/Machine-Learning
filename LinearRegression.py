@@ -4,8 +4,15 @@ import matplotlib.pyplot as plt
 import random
 
 '''
-y = B0 + B1*X1 + ... + Bn*Xn
-B = ((x_Transpose.x)^-1).x_Transpose.y
+Method for modeling the past relationship between independent input variables and dependent output variables to help make predictions about the output variables in the future. 
+- modeling equation: y = B0 + B1*X1 + ... + Bn*Xn
+- coeficients calculated by: B = ((x_Transpose.x)^-1).x_Transpose.y
+    - where x = input variables and y = target variable
+
+Uses
+- Optimizing product level price points
+- Estimating price elasticities
+- Analyzing metrics driving product sales (pricing,volume,etc)
 '''
 class MultipleLinearRegression:
     def __init__(self):

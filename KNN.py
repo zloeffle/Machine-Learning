@@ -4,7 +4,7 @@ import math
 import random
 
 '''
-Implementation of K-Nearest Neighbors classifier
+Classifies a set of data based on the k-closest labels from a training dataset
 '''
 class KNN_Classifier:
     def __init__(self,k):
