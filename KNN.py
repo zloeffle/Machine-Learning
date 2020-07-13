@@ -3,6 +3,9 @@ import numpy as np
 import math
 import random
 
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+
 '''
 Classifies a set of data based on the k-closest labels from a training dataset
 '''
@@ -10,6 +13,18 @@ class KNN_Classifier:
     def __init__(self,k):
         self.k = k # number of neighbors used for classification
 
+    def scale_data(self,data):
+        scaler = StandardScaler()
+        scaler.fit(data.drop('TARGET CLASS',axis=1))
+        scaled_feat = scaler.transform(data.drop('TARGET CLASS',axis=1))
+        res = pd.DataFrame(scaled_feat,columns=data.columns[:-1])
+        return res        
+        
+    def split_data(self,data):
+        scaled_data = self.scale_data(data)
+        x_train,x_test,y_train,y_test = train_test_split(scaled_data,data['TARGET CLASS'],test_size=0.30,random_state=101)
+        return x_train,x_test,y_train,y_test
+    
     '''
     Calculates eulicidean distance between two data points
     
@@ -56,14 +71,16 @@ class KNN_Classifier:
 if __name__ == '__main__':
     model = KNN_Classifier(5)
     data = pd.read_csv('data/Classified Data.csv')
+    cols = list(data.columns)
     data.drop(data.columns[0],axis=1,inplace=True)
     
-    cols = list(data.columns)
-    x_test = data[cols[:-1]].iloc[:5]
-    y_test = data[cols[-1]].iloc[:5]
-    train = data[cols].iloc[5:]
+    # split data and scale features
+    x_train,x_test,y_train,y_test = model.split_data(data)
     
-    for i in x_test.index:
-        n = model.get_neighbors(train,x_test.loc[i,cols[:-1]])
-        classification = model.classify(n)
-        
+    # get neighbors
+    for row in x_test.index:
+        neighbors = model.get_neighbors(x_train,x_test.loc[row,:])
+        classification = model.classify(neighbors)
+        #x_test.loc[row,'PREDICTED CLASS'] = classification
+    #x_test['TARGET CLASS'] = y_test
+    #print(x_test)
