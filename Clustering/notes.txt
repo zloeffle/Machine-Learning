@@ -1,0 +1,3 @@
+Clustering algorithms are used for structuring or summarizing data
+
+K Means

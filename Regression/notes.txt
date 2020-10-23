@@ -1,0 +1,7 @@
+Regression algorithms are used for predicting continuous values, which refers to the unfixed number of possible measurements between 2 realistic points
+
+Linear Regression
+Polynomial Regression
+Exponential Regression
+Logistic Regression
+Logarithmic Regression
