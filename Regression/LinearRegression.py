@@ -1,5 +1,4 @@
 from numpy.core.defchararray import mod
-from numpy.lib.function_base import select
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -10,7 +9,6 @@ Method for modeling the past relationship between independent input variables an
 - modeling equation: y = B0 + B1*X1 + ... + Bn*Xn
 - coeficients calculated by: B = ((x_Transpose.x)^-1).x_Transpose.y
     - where x = input variables and y = target variable
-
 Uses
 - Optimizing product level price points
 - Estimating price elasticities
@@ -20,13 +18,23 @@ class LinearRegression:
     def __init__(self,x,y,alpha=0.03,num_iter=1500):
         self.alpha = alpha # learning rate
         self.n_iter = num_iter # number of iterations for the gradient descent
+        
         self.n_features = np.size(x,1) # num of features
         self.n_samples = len(y) # num of rows 
-        self.x = np.hstack((np.ones((self.n_samples,1)),(x-np.mean(x,0))/np.std(x,0))) # resca;e values for predictor vars
+        
+        self.x = np.hstack((np.ones((self.n_samples,1)),self.normalize(x))) # resca;e values for predictor vars
         self.y = y[:,np.newaxis] # increase dimension of target val array to imitate a col vector
+        
         self.coef = None # coefficients
-        self.params = np.zeros((self.n_features+1,1)) # initialize params as 0
+        self.weights = np.zeros((self.n_features+1,1)) # initialize weights as 0
         self.intercept = None
+
+    '''
+    Rescale the x matrix values to boost accuracy & lower error cost
+    '''
+    def normalize(self,x):
+        norm_x = (x-np.mean(x,0))/np.std(x,0)
+        return norm_x
 
     '''
     Fit training data to the regression model to get the coefficients
@@ -34,18 +42,25 @@ class LinearRegression:
     '''
     def fit(self):
         for i in range(self.n_iter):
-            # compute the partial derivative of the cost function with respect to the parameters, update parameters
-            self.params = self.params - (self.alpha/self.n_samples) * self.x.T @ (self.x @ self.params - self.y)
+            # prediction for current set of weights
+            pred = np.dot(self.x,self.weights)
+
+            # calculate error for the prediction
+            error_rate = self.y - pred
+
+            # compute the partial derivative for each feature
+            self.weights -= (self.alpha/self.n_samples) * np.dot(-self.x.T,error_rate)
             
-        self.intercept = self.params[0]
-        self.coef = self.params[1:]
+        self.intercept = self.weights[0]
+        self.coef = self.weights[1:]
+
 
     '''
     Predict the target values using new data
     '''
     def predict(self,x):
-        n_samples = np.size(x,0) # shape of new dataset
-        y = np.hstack((np.ones((n_samples,1)),(x-np.mean(x,0))/np.std(x,0))).dot(self.params)
+        n_samples = np.size(x,0) # shape of test data
+        y = np.hstack((np.ones((n_samples,1)),self.normalize(x))).dot(self.weights)
         return y
     
     '''
@@ -76,4 +91,4 @@ if __name__ == '__main__':
     model.fit()
     pred = model.predict(x_test)
     score = model.score(y_test,pred)
-    
+    print(score)
