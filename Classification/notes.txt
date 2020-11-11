@@ -1,7 +1,0 @@
-Classification algorithms are used for a predicting the class/category for a set of items
-
-K-Nearest Neighbors
-Decision Trees
-Random Forest
-Support Vector Machine
-Naive Bayes
